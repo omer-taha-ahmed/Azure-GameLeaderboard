@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎮 GameLeaderboard - Azure Edition</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0078D4 0%, #5C2D91 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+        
+        header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .azure-badge {
+            background: #00BCF2;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+        
+        .stat-value {
+            color: #0078D4;
+            font-size: 2em;
+            font-weight: bold;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .card h2 {
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #0078D4;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            color: #666;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: #0078D4;
+        }
+        
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #0078D4 0%, #5C2D91 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 120, 212, 0.4);
+        }
+        
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .leaderboard-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        
+        .leaderboard-table th,
+        .leaderboard-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .leaderboard-table th {
+            background: #f5f5f5;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .leaderboard-table tr:hover {
+            background: #f9f9f9;
+        }
+        
+        .rank-1 { color: #FFD700; font-weight: bold; }
+        .rank-2 { color: #C0C0C0; font-weight: bold; }
+        .rank-3 { color: #CD7F32; font-weight: bold; }
+        
+        .message {
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: block;
+        }
+        
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            display: block;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+        
+        .refresh-btn {
+            background: #28a745;
+            margin-bottom: 15px;
+        }
+        
+        footer {
+            text-align: center;
+            color: white;
+            margin-top: 40px;
+            padding: 20px;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎮 GameLeaderboard</h1>
+            <p>Real-Time Multiplayer Rankings</p>
+            <span class="azure-badge">☁️ Powered by Azure</span>
+        </header>
+        
+        <div class="stats-bar">
+            <div class="stat-card">
+                <div class="stat-label">Total Players</div>
+                <div class="stat-value" id="totalPlayers">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Top Score</div>
+                <div class="stat-value" id="topScore">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Current Game</div>
+                <div class="stat-value" id="currentGame">game001</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Last Updated</div>
+                <div class="stat-value" id="lastUpdated">--:--</div>
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <div class="card">
+                <h2>📊 Submit Score</h2>
+                <div id="submitMessage" class="message"></div>
+                <form id="scoreForm">
+                    <div class="form-group">
+                        <label for="playerName">Player Name</label>
+                        <input type="text" id="playerName" placeholder="Enter your name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="playerId">Player ID</label>
+                        <input type="text" id="playerId" placeholder="Unique player ID" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="gameId">Game</label>
+                        <select id="gameId">
+                            <option value="game001">Game 001 - Space Invaders</option>
+                            <option value="game002">Game 002 - Puzzle Quest</option>
+                            <option value="game003">Game 003 - Racing Rivals</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="score">Score</label>
+                        <input type="number" id="score" placeholder="Your score" min="0" max="999999" required>
+                    </div>
+                    <button type="submit" id="submitBtn">🚀 Submit Score</button>
+                </form>
+            </div>
+            
+            <div class="card">
+                <h2>🏆 Leaderboard</h2>
+                <button class="refresh-btn" onclick="loadRankings()">🔄 Refresh</button>
+                <div id="leaderboardContainer">
+                    <div class="loading">Loading rankings...</div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Built with ☁️ Azure Functions + 🗄️ Cosmos DB + 🌐 Static Website</p>
+            <p>100% Serverless | 100% Free Tier</p>
+        </footer>
+    </div>
+    <script>
+        // ⚠️ REPLACE THIS WITH YOUR FUNCTION APP URL!
+        const API_BASE = 'https://gameleaderboard-func-2026-fehdgghqg5a7guh7.centralus-01.azurewebsites.net/api';
+        // Example: const API_BASE = 'https://gameleaderboard-func-3847.azurewebsites.net/api';
+        
+        // Load rankings on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadRankings();
+            
+            // Auto-refresh every 30 seconds
+            setInterval(loadRankings, 30000);
+        });
+        
+        // Submit score form handler
+        document.getElementById('scoreForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const messageDiv = document.getElementById('submitMessage');
+            
+            submitBtn.disabled = true;
+            submitBtn.textContent = '⏳ Submitting...';
+            
+            const data = {
+                playerName: document.getElementById('playerName').value,
+                playerId: document.getElementById('playerId').value,
+                gameId: document.getElementById('gameId').value,
+                score: parseInt(document.getElementById('score').value)
+            };
+            
+            try {
+                const response = await fetch(`${API_BASE}/SubmitScore`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    messageDiv.className = 'message success';
+                    messageDiv.textContent = `✅ ${result.message} Score: ${result.score}`;
+                    if (result.improvement > 0) {
+                        messageDiv.textContent += ` (+${result.improvement} improvement!)`;
+                    }
+                    
+                    // Clear form
+                    document.getElementById('score').value = '';
+                    
+                    // Refresh leaderboard
+                    loadRankings();
+                } else {
+                    messageDiv.className = 'message error';
+                    messageDiv.textContent = `❌ ${result.message}`;
+                }
+            } catch (error) {
+                messageDiv.className = 'message error';
+                messageDiv.textContent = `❌ Error: ${error.message}`;
+            }
+            
+            submitBtn.disabled = false;
+            submitBtn.textContent = '🚀 Submit Score';
+            
+            // Hide message after 5 seconds
+            setTimeout(() => {
+                messageDiv.className = 'message';
+            }, 5000);
+        });
+        
+        // Load rankings function
+        async function loadRankings() {
+            const container = document.getElementById('leaderboardContainer');
+            const gameId = document.getElementById('gameId').value;
+            
+            try {
+                const response = await fetch(`${API_BASE}/GetRankings?gameId=${gameId}`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Update stats
+                    document.getElementById('totalPlayers').textContent = result.totalPlayers;
+                    document.getElementById('topScore').textContent = 
+                        result.rankings.length > 0 ? result.rankings[0].score.toLocaleString() : '0';
+                    document.getElementById('currentGame').textContent = result.gameId;
+                    document.getElementById('lastUpdated').textContent = 
+                        new Date().toLocaleTimeString();
+                    
+                    // Build table
+                    if (result.rankings.length === 0) {
+                        container.innerHTML = '<div class="loading">No scores yet. Be the first!</div>';
+                    } else {
+                        let html = `
+                            <table class="leaderboard-table">
+                                <thead>
+                                    <tr>
+                                        <th>Rank</th>
+                                        <th>Player</th>
+                                        <th>Score</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                        `;
+                        
+                        result.rankings.forEach((player, index) => {
+                            const rankClass = index < 3 ? `rank-${index + 1}` : '';
+                            const medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '';
+                            
+                            html += `
+                                <tr>
+                                    <td class="${rankClass}">${medal} #${player.rank}</td>
+                                    <td>${player.playerName}</td>
+                                    <td>${player.score.toLocaleString()}</td>
+                                </tr>
+                            `;
+                        });
+                        
+                        html += '</tbody></table>';
+                        container.innerHTML = html;
+                    }
+                } else {
+                    container.innerHTML = `<div class="loading">Error: ${result.message}</div>`;
+                }
+            } catch (error) {
+                container.innerHTML = `<div class="loading">Error loading rankings: ${error.message}</div>`;
+            }
+        }
+        
+        // Reload rankings when game changes
+        document.getElementById('gameId').addEventListener('change', loadRankings);
+    </script>
+</body>
+</html>
