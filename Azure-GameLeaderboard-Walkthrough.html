@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azure GameLeaderboard - Complete Click-by-Click Walkthrough</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background: #fff;
+        }
+        
+        @media print {
+            body {
+                padding: 20px;
+                font-size: 11pt;
+            }
+            .no-print {
+                display: none;
+            }
+            h1, h2, h3 {
+                page-break-after: avoid;
+            }
+            pre, table {
+                page-break-inside: avoid;
+            }
+        }
+        
+        .print-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #0078D4;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,120,212,0.3);
+        }
+        
+        .print-btn:hover {
+            background: #005a9e;
+        }
+        
+        h1 {
+            color: #0078D4;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            border-bottom: 4px solid #0078D4;
+            padding-bottom: 15px;
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
+        
+        .meta-box {
+            background: linear-gradient(135deg, #0078D4 0%, #5C2D91 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        
+        .meta-item {
+            text-align: center;
+        }
+        
+        .meta-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+        
+        .meta-value {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        
+        h2 {
+            color: #5C2D91;
+            font-size: 1.8em;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #5C2D91;
+        }
+        
+        h3 {
+            color: #0078D4;
+            font-size: 1.3em;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+        
+        h4 {
+            color: #333;
+            font-size: 1.1em;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        
+        p {
+            margin-bottom: 15px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        th {
+            background: #f5f5f5;
+            font-weight: 600;
+        }
+        
+        tr:nth-child(even) {
+            background: #fafafa;
+        }
+        
+        pre {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+        }
+        
+        code {
+            background: #f0f0f0;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .success {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .info {
+            background: #e7f3ff;
+            border-left: 4px solid #0078D4;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        ol, ul {
+            margin: 15px 0;
+            padding-left: 30px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+        }
+        
+        .step-box {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .step-number {
+            background: #0078D4;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .checkpoint {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        
+        .checkpoint::before {
+            content: "✅ CHECKPOINT";
+            font-weight: bold;
+            color: #28a745;
+            display: block;
+            margin-bottom: 10px;
+        }
+        
+        hr {
+            border: none;
+            border-top: 1px solid #ddd;
+            margin: 30px 0;
+        }
+        
+        .toc {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        
+        .toc h3 {
+            margin-top: 0;
+        }
+        
+        .toc ol {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <button class="print-btn no-print" onclick="window.print()">📄 Save as PDF</button>
+
+    <h1>🎮 Azure GameLeaderboard</h1>
+    <p class="subtitle">Complete Click-by-Click Walkthrough - Serverless Gaming Leaderboard on Azure</p>
+    
+    <div class="meta-box">
+        <div class="meta-item">
+            <div class="meta-label">⏱ Total Time</div>
+            <div class="meta-value">2-3 Hours</div>
+        </div>
+        <div class="meta-item">
+            <div class="meta-label">💰 Total Cost</div>
+            <div class="meta-value">$0 (Free Tier)</div>
+        </div>
+        <div class="meta-item">
+            <div class="meta-label">🎯 Difficulty</div>
+            <div class="meta-value">Intermediate</div>
+        </div>
+    </div>
+
+    <div class="toc">
+        <h3>📋 Table of Contents</h3>
+        <ol>
+            <li>Preparation (5 min)</li>
+            <li>Phase 1: Create Resource Group (5 min)</li>
+            <li>Phase 2: Create Cosmos DB Database (15 min)</li>
+            <li>Phase 3: Create Azure Function App (15 min)</li>
+            <li>Phase 4: Create Lambda Functions (40 min)</li>
+            <li>Phase 5: Test the API (10 min)</li>
+            <li>Phase 6: Create Frontend (30 min)</li>
+            <li>Phase 7: Final Testing (10 min)</li>
+            <li>Cleanup Instructions</li>
+        </ol>
+    </div>
+
+    <h2>📋 Prerequisites</h2>
+    <ul>
+        <li>✅ Azure Account (free tier eligible) - <a href="https://azure.microsoft.com/free/">Create here</a></li>
+        <li>✅ Notepad or document to save important values</li>
+        <li>✅ 2-3 hours of focused time</li>
+        <li>✅ Email address you can access</li>
+    </ul>
+
+    <hr>
+
+    <h2>📦 Preparation (5 minutes)</h2>
+    
+    <h3>Step 1: Create Folder & Notes File</h3>
+    <ol>
+        <li>Open <strong>File Explorer</strong></li>
+        <li>Navigate to: <code>C:\Users\YourName\Downloads\</code></li>
+        <li>Right-click → <strong>New</strong> → <strong>Folder</strong> → Name it: <code>AzureGameLeaderboard</code></li>
+        <li>Open the folder</li>
+        <li>Right-click inside → <strong>New</strong> → <strong>Text Document</strong> → Name it: <code>project-notes.txt</code></li>
+        <li>Double-click to open and paste this template:</li>
+    </ol>
+
+<pre>=== AZURE GAMELEADERBOARD PROJECT - SAVE ALL VALUES HERE ===
+
+Region: East US (or your chosen region)
+
+=== RESOURCE GROUP ===
+Resource Group Name: 
+Subscription: 
+
+=== COSMOS DB ===
+Account Name: 
+Endpoint URL: 
+Primary Key: 
+Database Name: 
+Container Name: 
+
+=== FUNCTION APP ===
+Function App Name: 
+Function App URL: 
+SubmitScore URL: 
+GetRankings URL: 
+GetPlayerStats URL: 
+
+=== STORAGE ACCOUNT (Frontend) ===
+Storage Account Name: 
+Static Website URL:</pre>
+
+    <hr>
+
+    <h2>🗂️ Phase 1: Create Resource Group (5 min)</h2>
+    
+    <div class="info">
+        <strong>What is a Resource Group?</strong> It's like a folder that contains all your Azure resources. Everything we create will go in here.
+    </div>
+
+    <h3>Step 1.1: Open Azure Portal</h3>
+    <ol>
+        <li>Open your web browser</li>
+        <li>Go to: <strong>https://portal.azure.com</strong></li>
+        <li>Sign in with your Microsoft/Azure account</li>
+    </ol>
+
+    <h3>Step 1.2: Navigate to Resource Groups</h3>
+    <ol>
+        <li>Click on the <strong>search bar</strong> at the top</li>
+        <li>Type: <code>Resource groups</code></li>
+        <li>Click on <strong>Resource groups</strong> from the results</li>
+    </ol>
+
+    <h3>Step 1.3: Create New Resource Group</h3>
+    <ol>
+        <li>Click the <strong>+ Create</strong> button (top left)</li>
+    </ol>
+
+    <h4>Fill in details:</h4>
+    <table>
+        <tr><th>Field</th><th>What to Enter</th></tr>
+        <tr><td><strong>Subscription</strong></td><td>Select your subscription from dropdown</td></tr>
+        <tr><td><strong>Resource group</strong></td><td><code>GameLeaderboard-RG</code></td></tr>
+        <tr><td><strong>Region</strong></td><td><code>(US) East US</code> or <code>Central US</code></td></tr>
+    </table>
+
+    <ol start="2">
+        <li>Click <strong>Review + create</strong></li>
+        <li>Click <strong>Create</strong></li>
+    </ol>
+
+    <div class="checkpoint">
+        You see a notification: "Resource group created"
+    </div>
+
+    <hr>
+
+    <h2>🗄️ Phase 2: Create Cosmos DB Database (15 min)</h2>
+
+    <h3>Step 2.1: Navigate to Cosmos DB</h3>
+    <ol>
+        <li>Click on the <strong>search bar</strong> at the top</li>
+        <li>Type: <code>Azure Cosmos DB</code></li>
+        <li>Click on <strong>Azure Cosmos DB</strong> from results</li>
+    </ol>
+
+    <h3>Step 2.2: Create Cosmos DB Account</h3>
+    <ol>
+        <li>Click the <strong>+ Create</strong> button</li>
+        <li>Find <strong>"Azure Cosmos DB for NoSQL"</strong></li>
+        <li>Click <strong>Create</strong> inside that box</li>
+    </ol>
+
+    <h3>Step 2.3: Configure Basics Tab</h3>
+    <table>
+        <tr><th>Field</th><th>What to Enter</th></tr>
+        <tr><td><strong>Subscription</strong></td><td>Select your subscription</td></tr>
+        <tr><td><strong>Resource Group</strong></td><td><code>GameLeaderboard-RG</code></td></tr>
+        <tr><td><strong>Account Name</strong></td><td><code>gameleaderboard-cosmos-XXXX</code> (add random numbers)</td></tr>
+        <tr><td><strong>Location</strong></td><td>Same region as Resource Group</td></tr>
+        <tr><td><strong>Capacity mode</strong></td><td><strong>Serverless</strong> ⚠️ CRITICAL!</td></tr>
+    </table>
+
+    <div class="warning">
+        <strong>⚠️ VERY IMPORTANT:</strong> The Capacity mode MUST be <strong>Serverless</strong> (not Provisioned throughput). Serverless = Free tier eligible!
+    </div>
+
+    <h3>Step 2.4: Other Tabs</h3>
+    <ul>
+        <li><strong>Global Distribution:</strong> Geo-Redundancy = Disable</li>
+        <li><strong>Encryption:</strong> Service-managed key (default, FREE)</li>
+        <li><strong>Networking:</strong> All networks (default)</li>
+    </ul>
+
+    <h3>Step 2.5: Create</h3>
+    <ol>
+        <li>Click <strong>Review + create</strong></li>
+        <li>Click <strong>Create</strong></li>
+        <li><strong>Wait 5-10 minutes</strong> for deployment</li>
+        <li>Click <strong>Go to resource</strong></li>
+    </ol>
+
+    <h3>Step 2.6: Get Cosmos DB Details</h3>
+    <ol>
+        <li>In left sidebar, under <strong>Settings</strong>, click <strong>Keys</strong></li>
+        <li>Copy <strong>URI</strong> (looks like: https://xxx.documents.azure.com:443/)</li>
+        <li>Copy <strong>PRIMARY KEY</strong></li>
+        <li>Paste both into your notes.txt</li>
+    </ol>
+
+    <h3>Step 2.7: Create Database and Container</h3>
+    <ol>
+        <li>In left sidebar, click <strong>Data Explorer</strong></li>
+        <li>Click <strong>New Container</strong></li>
+    </ol>
+
+    <table>
+        <tr><th>Field</th><th>What to Enter</th></tr>
+        <tr><td><strong>Database id</strong></td><td>Create new → <code>GameLeaderboardDB</code></td></tr>
+        <tr><td><strong>Container id</strong></td><td><code>GameScores</code></td></tr>
+        <tr><td><strong>Partition key</strong></td><td><code>/GameId</code> (include the slash!)</td></tr>
+    </table>
+
+    <ol start="3">
+        <li>Click <strong>OK</strong></li>
+    </ol>
+
+    <div class="checkpoint">
+        In Data Explorer, you see:<br>
+        📁 GameLeaderboardDB<br>
+        &nbsp;&nbsp;&nbsp;📁 GameScores
+    </div>
+
+    <hr>
+
+    <h2>⚡ Phase 3: Create Azure Function App (15 min)</h2>
+
+    <h3>Step 3.1: Navigate to Function App</h3>
+    <ol>
+        <li>Search bar → Type: <code>Function App</code></li>
+        <li>Click on <strong>Function App</strong></li>
+        <li>Click <strong>+ Create</strong></li>
+    </ol>
+
+    <h3>Step 3.2: Configure Basics Tab</h3>
+    <table>
+        <tr><th>Field</th><th>What to Enter</th></tr>
+        <tr><td><strong>Subscription</strong></td><td>Your subscription</td></tr>
+        <tr><td><strong>Resource Group</strong></td><td><code>GameLeaderboard-RG</code></td></tr>
+        <tr><td><strong>Function App name</strong></td><td><code>gameleaderboard-func-XXXX</code> (globally unique)</td></tr>
+        <tr><td><strong>Deploy code or container</strong></td><td><code>Code</code></td></tr>
+        <tr><td><strong>Runtime stack</strong></td><td><code>Node.js</code></td></tr>
+        <tr><td><strong>Version</strong></td><td><code>20 LTS</code></td></tr>
+        <tr><td><strong>Region</strong></td><td>Same as before (try Central US if East US fails)</td></tr>
+        <tr><td><strong>Operating System</strong></td><td><code>Windows</code></td></tr>
+    </table>
+
+    <h3>Step 3.3: Configure Hosting Tab</h3>
+    <table>
+        <tr><th>Field</th><th>What to Select</th></tr>
+        <tr><td><strong>Storage account</strong></td><td>Create new (accept auto-generated name)</td></tr>
+        <tr><td><strong>Plan type</strong></td><td><strong>Consumption (Serverless)</strong> ⚠️ CRITICAL!</td></tr>
+    </table>
+
+    <div class="warning">
+        <strong>⚠️ CRITICAL:</strong> Plan type MUST be <strong>Consumption (Serverless)</strong> = FREE tier eligible.<br>
+        ❌ Functions Premium = COSTS MONEY<br>
+        ❌ App Service Plan = COSTS MONEY<br><br>
+        <strong>If you get a quota error:</strong> Try a different region (Central US, East US 2, North Europe) or use "Flex Consumption" plan.
+    </div>
+
+    <h3>Step 3.4: Create Function App</h3>
+    <ol>
+        <li>Click <strong>Review + create</strong></li>
+        <li>Verify: Plan shows <strong>Consumption (Serverless)</strong></li>
+        <li>Click <strong>Create</strong></li>
+        <li>Wait 2-3 minutes</li>
+        <li>Click <strong>Go to resource</strong></li>
+    </ol>
+
+    <h3>Step 3.5: Add Environment Variables</h3>
+    <ol>
+        <li>In left sidebar → <strong>Settings</strong> → <strong>Environment variables</strong></li>
+        <li>Add these 4 settings (click + Add for each):</li>
+    </ol>
+
+    <table>
+        <tr><th>Name</th><th>Value</th></tr>
+        <tr><td><code>COSMOS_ENDPOINT</code></td><td>Your Cosmos DB URI from notes.txt</td></tr>
+        <tr><td><code>COSMOS_KEY</code></td><td>Your Cosmos DB Primary Key from notes.txt</td></tr>
+        <tr><td><code>COSMOS_DATABASE</code></td><td><code>GameLeaderboardDB</code></td></tr>
+        <tr><td><code>COSMOS_CONTAINER</code></td><td><code>GameScores</code></td></tr>
+    </table>
+
+    <ol start="3">
+        <li>Click <strong>Apply</strong> at the bottom</li>
+        <li>Click <strong>Confirm</strong> when prompted</li>
+    </ol>
+
+    <hr>
+
+    <h2>📝 Phase 4: Create Functions (40 min)</h2>
+
+    <h3>Function 1: SubmitScore</h3>
+    <ol>
+        <li>Go to Function App → <strong>Functions</strong> → <strong>+ Create</strong></li>
+        <li>Development environment: <strong>Develop in portal</strong> → Next</li>
+        <li>Template: <strong>HTTP trigger</strong> → Next</li>
+        <li>Function name: <code>SubmitScore</code></li>
+        <li>Authorization level: <strong>Anonymous</strong></li>
+        <li>Click <strong>Create</strong></li>
+    </ol>
+
+    <h4>Add Code:</h4>
+    <ol>
+        <li>Click <strong>Code + Test</strong></li>
+        <li>Select <code>index.js</code> from dropdown</li>
+        <li>Delete all existing code</li>
+        <li>Paste the code below</li>
+        <li>Click <strong>Save</strong></li>
+    </ol>
+
+<pre>const { CosmosClient } = require("@azure/cosmos");
+
+const endpoint = process.env.COSMOS_ENDPOINT;
+const key = process.env.COSMOS_KEY;
+const databaseId = process.env.COSMOS_DATABASE || "GameLeaderboardDB";
+const containerId = process.env.COSMOS_CONTAINER || "GameScores";
+
+const client = new CosmosClient({ endpoint, key });
+const database = client.database(databaseId);
+const container = database.container(containerId);
+
+module.exports = async function (context, req) {
+    context.log('SubmitScore function triggered');
+    
+    try {
+        const body = req.body || {};
+        const { playerId, gameId, score, playerName } = body;
+        
+        if (!playerId || !gameId || score === undefined || !playerName) {
+            context.res = {
+                status: 400,
+                headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+                body: JSON.stringify({ success: false, message: 'Missing required fields' })
+            };
+            return;
+        }
+        
+        if (score < 0 || score > 999999) {
+            context.res = {
+                status: 400,
+                headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+                body: JSON.stringify({ success: false, message: 'Invalid score range' })
+            };
+            return;
+        }
+        
+        const id = `${playerId}_${gameId}`;
+        let previousScore = 0;
+        let isNewRecord = true;
+        
+        try {
+            const { resource: existing } = await container.item(id, gameId).read();
+            if (existing) {
+                previousScore = existing.Score || 0;
+                isNewRecord = false;
+                if (score <= previousScore) {
+                    context.res = {
+                        status: 200,
+                        headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+                        body: JSON.stringify({ success: true, message: 'Previous score was higher', currentScore: previousScore })
+                    };
+                    return;
+                }
+            }
+        } catch (err) {
+            if (err.code !== 404) throw err;
+        }
+        
+        const timestamp = Date.now();
+        await container.items.upsert({
+            id, PlayerId: playerId, GameId: gameId, Score: score,
+            PlayerName: playerName, Timestamp: timestamp, SubmittedAt: new Date().toISOString()
+        });
+        
+        context.res = {
+            status: 200,
+            headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+            body: JSON.stringify({
+                success: true, message: isNewRecord ? 'New score recorded!' : 'New personal best!',
+                score, previousScore, improvement: score - previousScore, isNewRecord, timestamp
+            })
+        };
+    } catch (error) {
+        context.log.error('Error:', error);
+        context.res = {
+            status: 500,
+            headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+            body: JSON.stringify({ success: false, message: 'Internal server error', error: error.message })
+        };
+    }
+};</pre>
+
+    <h4>Configure HTTP Methods:</h4>
+    <ol>
+        <li>Click <strong>Integration</strong> (left sidebar)</li>
+        <li>Click <strong>HTTP (req)</strong></li>
+        <li>Check: ✅ POST, ✅ OPTIONS</li>
+        <li>Click <strong>Save</strong></li>
+    </ol>
+
+    <hr>
+
+    <h3>Function 2: GetRankings</h3>
+    <ol>
+        <li>Go back to Function App → <strong>Functions</strong> → <strong>+ Create</strong></li>
+        <li>Template: <strong>HTTP trigger</strong></li>
+        <li>Name: <code>GetRankings</code>, Authorization: <strong>Anonymous</strong></li>
+        <li>Create, then paste this code:</li>
+    </ol>
+
+<pre>const { CosmosClient } = require("@azure/cosmos");
+
+const endpoint = process.env.COSMOS_ENDPOINT;
+const key = process.env.COSMOS_KEY;
+const databaseId = process.env.COSMOS_DATABASE || "GameLeaderboardDB";
+const containerId = process.env.COSMOS_CONTAINER || "GameScores";
+
+const client = new CosmosClient({ endpoint, key });
+const container = client.database(databaseId).container(containerId);
+
+module.exports = async function (context, req) {
+    try {
+        let gameId = req.query.gameId || req.params.gameId || 'game001';
+        const limit = parseInt(req.query.limit) || 100;
+        
+        const { resources: items } = await container.items.query({
+            query: "SELECT * FROM c WHERE c.GameId = @gameId ORDER BY c.Score DESC OFFSET 0 LIMIT @limit",
+            parameters: [{ name: "@gameId", value: gameId }, { name: "@limit", value: limit }]
+        }).fetchAll();
+        
+        const rankings = items.map((item, index) => ({
+            rank: index + 1, playerId: item.PlayerId, playerName: item.PlayerName || 'Anonymous',
+            score: item.Score, timestamp: item.Timestamp, submittedAt: item.SubmittedAt
+        }));
+        
+        context.res = {
+            status: 200,
+            headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+            body: JSON.stringify({ success: true, gameId, totalPlayers: rankings.length, rankings, generatedAt: new Date().toISOString() })
+        };
+    } catch (error) {
+        context.res = {
+            status: 500,
+            headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+            body: JSON.stringify({ success: false, message: 'Error fetching rankings', error: error.message })
+        };
+    }
+};</pre>
+
+    <p><strong>Integration:</strong> Check ✅ GET, ✅ OPTIONS → Save</p>
+
+    <hr>
+
+    <h3>Function 3: GetPlayerStats</h3>
+    <p>Create with HTTP trigger, name: <code>GetPlayerStats</code>, Anonymous</p>
+
+<pre>const { CosmosClient } = require("@azure/cosmos");
+const endpoint = process.env.COSMOS_ENDPOINT;
+const key = process.env.COSMOS_KEY;
+const client = new CosmosClient({ endpoint, key });
+const container = client.database(process.env.COSMOS_DATABASE).container(process.env.COSMOS_CONTAINER);
+
+module.exports = async function (context, req) {
+    try {
+        let playerId = req.query.playerId || req.params.playerId;
+        if (!playerId) {
+            context.res = { status: 400, headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+                body: JSON.stringify({ success: false, message: 'playerId is required' }) };
+            return;
+        }
+        
+        const { resources: games } = await container.items.query({
+            query: "SELECT * FROM c WHERE c.PlayerId = @playerId",
+            parameters: [{ name: "@playerId", value: playerId }]
+        }).fetchAll();
+        
+        if (!games.length) {
+            context.res = { status: 404, headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+                body: JSON.stringify({ success: false, message: 'Player not found' }) };
+            return;
+        }
+        
+        const scores = games.map(g => g.Score);
+        context.res = {
+            status: 200,
+            headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+            body: JSON.stringify({
+                success: true,
+                player: {
+                    playerId, playerName: games[0].PlayerName,
+                    stats: { totalGames: games.length, averageScore: Math.round(scores.reduce((a,b)=>a+b,0)/games.length),
+                        bestScore: Math.max(...scores), worstScore: Math.min(...scores) },
+                    gameHistory: games.map(g => ({ gameId: g.GameId, score: g.Score, timestamp: g.Timestamp }))
+                }
+            })
+        };
+    } catch (error) {
+        context.res = { status: 500, headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+            body: JSON.stringify({ success: false, error: error.message }) };
+    }
+};</pre>
+
+    <hr>
+
+    <h3>Install Cosmos DB Package</h3>
+    <ol>
+        <li>Go to Function App (top level, not individual function)</li>
+        <li>Left sidebar → <strong>Console</strong> (under Development Tools)</li>
+        <li>Type and press Enter:</li>
+    </ol>
+    <pre>npm install @azure/cosmos</pre>
+    <p>Wait 30-60 seconds for installation to complete.</p>
+
+    <hr>
+
+    <h2>⚙️ Phase 5: Configure CORS (CRITICAL!)</h2>
+
+    <div class="warning">
+        <strong>⚠️ VERY IMPORTANT:</strong> Without proper CORS configuration, your frontend will get "Failed to fetch" errors!
+    </div>
+
+    <ol>
+        <li>Go to <strong>Function App</strong> (top level)</li>
+        <li>Left sidebar → <strong>API</strong> → <strong>CORS</strong></li>
+        <li>Add <strong>BOTH</strong> of these origins:</li>
+    </ol>
+
+    <table>
+        <tr><th>Origin to Add</th></tr>
+        <tr><td><code>*</code></td></tr>
+        <tr><td><code>https://YOUR-STORAGE-ACCOUNT.z##.web.core.windows.net</code></td></tr>
+    </table>
+
+    <p>(Replace with your actual static website URL - no trailing slash!)</p>
+
+    <ol start="4">
+        <li>Click <strong>Save</strong></li>
+        <li>Wait 30 seconds for changes to apply</li>
+    </ol>
+
+    <hr>
+
+    <h2>🎨 Phase 6: Create Frontend (30 min)</h2>
+
+    <h3>Step 6.1: Create Storage Account</h3>
+    <ol>
+        <li>Search: <code>Storage accounts</code> → Click <strong>+ Create</strong></li>
+    </ol>
+
+    <table>
+        <tr><th>Field</th><th>What to Enter</th></tr>
+        <tr><td><strong>Resource group</strong></td><td><code>GameLeaderboard-RG</code></td></tr>
+        <tr><td><strong>Storage account name</strong></td><td><code>glbfrontendXXXX</code> (lowercase, no hyphens)</td></tr>
+        <tr><td><strong>Region</strong></td><td>Same as before</td></tr>
+        <tr><td><strong>Performance</strong></td><td>Standard</td></tr>
+        <tr><td><strong>Redundancy</strong></td><td>LRS (cheapest)</td></tr>
+    </table>
+
+    <ol start="2">
+        <li>Click <strong>Review</strong> → <strong>Create</strong></li>
+        <li>Wait 1-2 minutes → <strong>Go to resource</strong></li>
+    </ol>
+
+    <h3>Step 6.2: Enable Static Website</h3>
+    <ol>
+        <li>Left sidebar → <strong>Data management</strong> → <strong>Static website</strong></li>
+        <li>Toggle <strong>Enabled</strong></li>
+        <li>Index document name: <code>index.html</code></li>
+        <li>Error document path: <code>index.html</code></li>
+        <li>Click <strong>Save</strong></li>
+        <li><strong>Copy the Primary endpoint URL</strong> to notes.txt</li>
+    </ol>
+
+    <h3>Step 6.3: Create index.html</h3>
+    <p>Create <code>index.html</code> on your computer with the frontend code. <strong>IMPORTANT:</strong> Replace <code>YOUR_FUNCTION_APP_URL</code> with your actual Function App URL!</p>
+
+    <pre>const API_BASE = 'https://YOUR-FUNCTION-APP.azurewebsites.net/api';</pre>
+
+    <h3>Step 6.4: Upload to Azure</h3>
+    <ol>
+        <li>Go to Storage Account → <strong>Containers</strong> → <strong>$web</strong></li>
+        <li>Click <strong>Upload</strong></li>
+        <li>Select your <code>index.html</code></li>
+        <li>Click <strong>Upload</strong></li>
+    </ol>
+
+    <h3>Step 6.5: Update CORS with Frontend URL</h3>
+    <ol>
+        <li>Go back to <strong>Function App</strong> → <strong>CORS</strong></li>
+        <li>Add your Static Website URL (no trailing slash!)</li>
+        <li>Click <strong>Save</strong></li>
+    </ol>
+
+    <hr>
+
+    <h2>🧪 Phase 7: Final Testing</h2>
+
+    <h3>Test 1: Submit Score</h3>
+    <ol>
+        <li>Open your Static Website URL</li>
+        <li>Fill in the form and click Submit</li>
+        <li>Verify success message appears</li>
+    </ol>
+
+    <h3>Test 2: View Leaderboard</h3>
+    <ol>
+        <li>Click Refresh button</li>
+        <li>Verify your submitted score appears</li>
+    </ol>
+
+    <div class="success">
+        <strong>🎉 CONGRATULATIONS!</strong><br>
+        You've built a complete serverless gaming leaderboard on Azure!
+    </div>
+
+    <hr>
+
+    <h2>🧹 Cleanup (Delete Everything)</h2>
+    <p>To delete all resources and avoid any charges:</p>
+    <ol>
+        <li>Search: <code>Resource groups</code></li>
+        <li>Click <code>GameLeaderboard-RG</code></li>
+        <li>Click <strong>Delete resource group</strong></li>
+        <li>Type the resource group name to confirm</li>
+        <li>Click <strong>Delete</strong></li>
+    </ol>
+    <p>Wait 5-10 minutes for complete deletion.</p>
+
+    <hr>
+
+    <h2>📊 Architecture Summary</h2>
+    <table>
+        <tr><th>Resource</th><th>Purpose</th><th>Cost</th></tr>
+        <tr><td>Resource Group</td><td>Organizes all resources</td><td>$0</td></tr>
+        <tr><td>Cosmos DB (Serverless)</td><td>Stores player scores</td><td>$0 (free tier)</td></tr>
+        <tr><td>Function App (Consumption)</td><td>4 serverless functions</td><td>$0 (1M free/month)</td></tr>
+        <tr><td>Storage Account</td><td>Hosts static website</td><td>$0 (5GB free)</td></tr>
+    </table>
+
+    <div class="info">
+        <strong>Monthly Cost: $0</strong> (within Azure Free Tier limits)
+    </div>
+
+    <footer style="text-align: center; margin-top: 50px; padding: 30px; color: #666; border-top: 1px solid #ddd;">
+        <p><strong>Azure GameLeaderboard</strong> - Complete Click-by-Click Walkthrough</p>
+        <p>Built with ☁️ Azure Functions + 🗄️ Cosmos DB + 🌐 Static Website</p>
+        <p>100% Serverless | 100% Free Tier</p>
+    </footer>
+
+</body>
+</html>
