@@ -121,8 +121,8 @@ GET /api/GetPlayerStats?playerId=player123
 
 ## 🚀 Quick Start
 
-See the complete walkthrough: [Azure-GameLeaderboard-Walkthrough.html](docs/Azure-GameLeaderboard-Walkthrough.html)
-
+See the complete walkthrough: [Azure-GameLeaderboard-Walkthrough.html](https://github.com/omer-taha-ahmed/Azure-GameLeaderboard/blob/main/Azure-GameLeaderboard-Walkthrough.html)
+(( DOWNLOAD IT SO YOU CAN OPEN IT ))
 ### Prerequisites
 - Azure Account (free tier)
 - 2-3 hours of time
@@ -212,3 +212,4 @@ Give a ⭐ if this project helped you learn Azure!
 ---
 
 **Built with ☁️ Azure | 100% Serverless | 100% Free Tier**
+
